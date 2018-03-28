@@ -1,6 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "graph.h"
+
+#ifdef _WIN64
+#define CLEAR_SCREEN "cls"
+#else
+#define CLEAR_SCREEN "clear"
+#endif
+
+void setInfinity(double** matrix, int n) {
+
+	for(int i=0; i < n-1; i++)
+		for(int j=i+1; j < n; j++) {
+			matrix[i][j] = INFINITY;	
+			matrix[j][i] = INFINITY;	
+		}
+}
 
 double** newAdjMatrix(int n) {
 
@@ -8,7 +24,9 @@ double** newAdjMatrix(int n) {
 
 	for(int i=0; i < n; i++)
 		for(int j=0; j < n; j++)
-			matrix[i] = (double*) calloc(n, sizeof(double));
+			matrix[i] = (double*) malloc(n * sizeof(double));
+	
+	setInfinity(matrix, n);
 
 	return matrix;
 }
@@ -44,10 +62,12 @@ void printAdjMatrix(GRAPH* g) {
 
 	int n = g->vertexNum;
 
+	system(CLEAR_SCREEN);
 	for(int i=0; i < n; i++) {
 		for(int j=0; j < n; j++)
 			printf("%05.2lf      ", g->adjMatrix[i][j]);
 		
 		printf("\n\n");
 	}
+	getchar();
 } 

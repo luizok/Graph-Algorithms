@@ -14,6 +14,7 @@ int main(int argc, char* argv[]) {
 
 	GRAPH* g = newGraph((int) atoi(argv[1]), (int) atoi(argv[2]),0);
 	
+	printAdjMatrix(g);
 	scanMatrixInputs(g);
 	printAdjMatrix(g);
 

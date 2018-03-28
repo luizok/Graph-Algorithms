@@ -8,7 +8,6 @@ typedef struct graph {
 	int hasLoop;
 } GRAPH;
 
-double** newAdjMatrix(int n);
 GRAPH* newGraph(int vertexNum, int isOriented, int hasLoop);
 void scanMatrixInputs(GRAPH* g);
 void printAdjMatrix(GRAPH* g);
