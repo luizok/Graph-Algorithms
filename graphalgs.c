@@ -88,7 +88,7 @@ void minimumPath(GRAPH* g, int vertex) {
 }
 
 int allInPartition(int* partition, int n) {
-
+	
 	for(int i=0; i < n; i++)
 		if(partition[i] == 0)
 			return 0;
@@ -99,43 +99,42 @@ int allInPartition(int* partition, int n) {
 void minimumSpanningTree(GRAPH* g, int vertex) {
 
 	int* inPartition = calloc(g->vertexNum, sizeof(int));
-	int minIndex;
+	int minRow, minCol;
 	double min;
 	double minSize = 0.;
 	
 	inPartition[vertex] = 1;
 
 	while(!allInPartition(inPartition, g->vertexNum)) {
-		for(int i=0; i < g->vertexNum; i++) {	
+		min = INFINITY;
+		minRow = -1;
+		minCol = -1;
+		
+		for(int i=0; i < g->vertexNum; i++) {
 			if(inPartition[i]) {
-				min = INFINITY;
-				minIndex = -1;
-
 				for(int j=0; j < g->vertexNum; j++) {
-					if(!inPartition[j])
+					if(!inPartition[j]) {
 						if(0 < g->adjMatrix[i][j] && g->adjMatrix[i][j] < min) {
 							min = g->adjMatrix[i][j];
-							minIndex = j;
+							minRow = i;
+							minCol = j;
 						}
+					}
 				}
-				
-				if(allInPartition(inPartition, g->vertexNum)) {
-					printf("Minimum Spanning Tree value = %.2lf\n", minSize);
-				}
-				if(minIndex < 0) break;
-
-				inPartition[minIndex] = 1;
-
-				printf("edge(%2d, %2d)\n", i, minIndex);
-				minSize += min;
 			}
-	
-			if(minIndex < 0) break;
 		}
-	
-		if(minIndex < 0 && allInPartition(inPartition, g->vertexNum)) {
-			printf("INVALID GRAPH: There is at least one one that is disconnected\n");
+
+		if(minCol < 0) {
+			printf("The graph has at least one node that is disconnected\n");
 			break;
+		}else {
+			inPartition[minCol] = 1;
+			printf("e(%2d, %2d) = %.2lf\n", minRow, minCol, g->adjMatrix[minRow][minCol]);
+			minSize += g->adjMatrix[minRow][minCol];
+
+			if(allInPartition(inPartition, g->vertexNum))
+				printf("Minimum Spanning Tree value = %.2lf\n", minSize);
 		}
 	}
 }
+
