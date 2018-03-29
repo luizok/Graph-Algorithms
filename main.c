@@ -14,13 +14,13 @@ int main(int argc, char* argv[]) {
 		return EXIT_FAILURE;
 	}
 
-	GRAPH* g = newGraph((int) atoi(argv[1]), (int) atoi(argv[2]),0);
+	GRAPH* g = newGraph((int) atoi(argv[1]), (int) atoi(argv[2]), 0);
 	
 	printAdjMatrix(g);
 	scanMatrixInputs(g);
 	printAdjMatrix(g);
 
-	breadthFirstSearch(g, (int) atoi(argv[3]));
+	depthFirstSearch(g, (int) atoi(argv[3]));
 
 	return EXIT_SUCCESS;
 }
