@@ -65,7 +65,7 @@ void printAdjMatrix(GRAPH* g) {
 	system(CLEAR_SCREEN);
 	for(int i=0; i < n; i++) {
 		for(int j=0; j < n; j++)
-			printf("%05.2lf      ", g->adjMatrix[i][j]);
+			printf("%4.1lf      ", g->adjMatrix[i][j]);
 		
 		printf("\n\n");
 	}

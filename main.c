@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graph.h"
+#include "graphalgs.h"
 
 int main(int argc, char* argv[]) {
 
@@ -17,6 +18,8 @@ int main(int argc, char* argv[]) {
 	printAdjMatrix(g);
 	scanMatrixInputs(g);
 	printAdjMatrix(g);
+
+	breadthFirstSearch(g, 4);
 
 	return EXIT_SUCCESS;
 }
