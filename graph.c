@@ -46,6 +46,13 @@ void scanMatrixInputs(GRAPH* g) {
 
 	int n = g->vertexNum;
 	
+	// O limite superior desses loops externo depende do grafo
+	// ser orientado ou não. Caso ele não seja, basta percorrer
+	// a parte superior da matriz de adjacência e ir ate a linha n-1.
+	// Se ele não é orientado n-1+g->isOriented = n-1-0 = n-1, e no
+	// loop interno j = i+1. Caso contrário, será necessário percorrer
+	// toda a matrix, logo n-1+g->isOriented = n-1+1 = n e j = 0.
+
 	for(int i=0; i < n-1 + g->isOriented; i++)
 		for(int j = g->isOriented ? 0 : i+1; j < n; j++) { 
 			if(i != j) {

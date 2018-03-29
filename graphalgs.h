@@ -6,6 +6,6 @@
 void breadthFirstSearch(GRAPH* g, int vertex);
 void depthFirstSearch(GRAPH* g, int vertex);
 void minimumPath(GRAPH* g, int vertex);
-void minimumSpanningTree(GRAPH* g);
+void minimumSpanningTree(GRAPH* g, int vertex);
 
 #endif

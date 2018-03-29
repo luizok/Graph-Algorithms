@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
 	scanMatrixInputs(g);
 	printAdjMatrix(g);
 
-	depthFirstSearch(g, (int) atoi(argv[3]));
+	minimumSpanningTree(g, (int) atoi(argv[3]));
 
 	return EXIT_SUCCESS;
 }
