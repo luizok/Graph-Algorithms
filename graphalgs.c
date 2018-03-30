@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <limits.h>
 #include "graphalgs.h"
 #include "graph.h"
 
@@ -83,17 +82,105 @@ void depthFirstSearch(GRAPH* g, int vertex) {
 	printPairs(fatherOf, g->vertexNum);
 }
 
-void minimumPath(GRAPH* g, int vertex) {
-
-}
-
 int allInPartition(int* partition, int n) {
-	
+
 	for(int i=0; i < n; i++)
 		if(partition[i] == 0)
 			return 0;
 
 	return 1;
+}
+
+int heapIsEmpty(int* heap, int n) {
+
+	for(int i=0; i < n; i++)
+		if(heap[i] == 1)
+			return 0;
+
+	return 1;
+}
+
+int extractMin(int* heap, double* dist, int n) {
+
+	int minIndex = -1;
+	double min = INFINITY;
+
+	for(int i=0; i < n; i++)
+		if(heap[i] == 1)
+			if(dist[i] < min) {
+				min = dist[i];
+				minIndex = i;			
+			}
+
+	return minIndex;
+}
+
+int printRec(int dest, int* father) {
+
+	if(father[dest] == -1)
+		printf("%2d ", dest);
+	else if(father[dest] == -2)
+		printf("UNREACHABLE");
+	else {
+		printRec(father[dest], father);
+		printf("  ->  %2d", dest);
+	}
+}
+
+void printPath(int source, int destiny, int* father, double* dist, int n) {
+
+	double cost = 0.;
+
+	printf("d(%2d, %2d) = ", destiny, source);
+
+	while(destiny >= -1) {
+		if(destiny == source) {
+			printf("%2d", source);
+			break;
+		}
+	
+		printf("%2d -> ", destiny);
+		cost += dist[destiny];
+		destiny = father[destiny];
+	}
+	printf("\n");
+}
+
+void minimumPath(GRAPH* g, int vertex) {
+
+	int heap[g->vertexNum];
+	int fatherOf[g->vertexNum];
+	double distance[g->vertexNum];
+	int curr;
+
+	intializeVector(heap, 1, g->vertexNum);
+	intializeVector(fatherOf, -2, g->vertexNum);
+
+	for(int i=0; i < g->vertexNum; i++)
+		distance[i] = INFINITY;
+
+	fatherOf[vertex] = -1;
+	distance[vertex] = 0;
+
+	while(!heapIsEmpty(heap, g->vertexNum)) {
+		curr = extractMin(heap, distance, g->vertexNum);
+		heap[curr] = 0;
+
+		for(int j=0; j < g->vertexNum; j++)
+			if(j != curr)
+				if(distance[curr] + g->adjMatrix[curr][j] < distance[j]) {
+					distance[j] = distance[curr] + g->adjMatrix[curr][j];
+					fatherOf[j] = curr;
+				}
+	
+	}
+	
+		for(int i=0; i < g->vertexNum; i++) {
+			printf("d(%2d, %2d) = ", vertex, i);
+			printRec(i, fatherOf);
+			printf("\n");
+			//printPath(vertex, i, fatherOf, distance, g->vertexNum);
+	}
 }
 
 void minimumSpanningTree(GRAPH* g, int vertex) {
@@ -110,19 +197,15 @@ void minimumSpanningTree(GRAPH* g, int vertex) {
 		minRow = -1;
 		minCol = -1;
 		
-		for(int i=0; i < g->vertexNum; i++) {
-			if(inPartition[i]) {
-				for(int j=0; j < g->vertexNum; j++) {
-					if(!inPartition[j]) {
+		for(int i=0; i < g->vertexNum; i++)
+			if(inPartition[i])
+				for(int j=0; j < g->vertexNum; j++)
+					if(!inPartition[j])
 						if(0 < g->adjMatrix[i][j] && g->adjMatrix[i][j] < min) {
 							min = g->adjMatrix[i][j];
 							minRow = i;
 							minCol = j;
-						}
-					}
-				}
-			}
-		}
+						}		
 
 		if(minCol < 0) {
 			printf("The graph has at least one node that is disconnected\n");
