@@ -167,7 +167,7 @@ void minimumPath(GRAPH* g, int vertex) {
 		heap[curr] = 0;
 
 		for(int j=0; j < g->vertexNum; j++)
-			if(j != curr)
+			if(j != curr && 0 < g->adjMatrix[curr][j])
 				if(distance[curr] + g->adjMatrix[curr][j] < distance[j]) {
 					distance[j] = distance[curr] + g->adjMatrix[curr][j];
 					fatherOf[j] = curr;
