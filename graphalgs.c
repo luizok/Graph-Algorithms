@@ -115,35 +115,16 @@ int extractMin(int* heap, double* dist, int n) {
 	return minIndex;
 }
 
-int printRec(int dest, int* father) {
+int printPath(int dest, int* father) {
 
 	if(father[dest] == -1)
 		printf("%2d ", dest);
 	else if(father[dest] == -2)
 		printf("UNREACHABLE");
 	else {
-		printRec(father[dest], father);
+		printPath(father[dest], father);
 		printf("  ->  %2d", dest);
 	}
-}
-
-void printPath(int source, int destiny, int* father, double* dist, int n) {
-
-	double cost = 0.;
-
-	printf("d(%2d, %2d) = ", destiny, source);
-
-	while(destiny >= -1) {
-		if(destiny == source) {
-			printf("%2d", source);
-			break;
-		}
-	
-		printf("%2d -> ", destiny);
-		cost += dist[destiny];
-		destiny = father[destiny];
-	}
-	printf("\n");
 }
 
 void minimumPath(GRAPH* g, int vertex) {
@@ -164,6 +145,9 @@ void minimumPath(GRAPH* g, int vertex) {
 
 	while(!heapIsEmpty(heap, g->vertexNum)) {
 		curr = extractMin(heap, distance, g->vertexNum);
+
+		if(curr < 0) break;
+
 		heap[curr] = 0;
 
 		for(int j=0; j < g->vertexNum; j++)
@@ -177,10 +161,10 @@ void minimumPath(GRAPH* g, int vertex) {
 	
 		for(int i=0; i < g->vertexNum; i++) {
 			printf("d(%2d, %2d) = ", vertex, i);
-			printRec(i, fatherOf);
+			printf(" %6.2lf = ", distance[i]);
+			printPath(i, fatherOf);
 			printf("\n");
-			//printPath(vertex, i, fatherOf, distance, g->vertexNum);
-	}
+		}
 }
 
 void minimumSpanningTree(GRAPH* g, int vertex) {
