@@ -127,7 +127,7 @@ int printPath(int dest, int* father) {
 	}
 }
 
-void minimumPath(GRAPH* g, int vertex) {
+void minimumPathDijkstra(GRAPH* g, int vertex) {
 
 	int heap[g->vertexNum];
 	int fatherOf[g->vertexNum];
@@ -165,6 +165,32 @@ void minimumPath(GRAPH* g, int vertex) {
 			printPath(i, fatherOf);
 			printf("\n");
 		}
+}
+
+void minimumPathFloydWarshall(GRAPH* g, int vertex) {
+
+	double dist[g->vertexNum][g->vertexNum];
+
+	for(int i=0; i < g->vertexNum; i++)
+		for(int j=0; j < g->vertexNum; j++) {
+			if(i == j)
+				dist[i][j] = 0;
+			else if(g->adjMatrix[i][j] == 0)
+				dist[i][j] = INFINITY;
+			else
+				dist[i][j] = g->adjMatrix[i][j];
+		}
+
+	for(int k=0; k < g->vertexNum; k++)
+		for(int i=0; i < g->vertexNum; i++)
+			for(int j=0; j < g->vertexNum; j++)
+				if(dist[i][k] + dist[k][j] < dist[i][j])
+					dist[i][j] = dist[i][k] + dist[k][j];
+
+	for(int i=0; i < g->vertexNum; i++) {
+		printf("d(%2d, %2d) = ", vertex, i);
+		printf("%6.2f\n", dist[vertex][i]);	
+	}
 }
 
 void minimumSpanningTree(GRAPH* g, int vertex) {

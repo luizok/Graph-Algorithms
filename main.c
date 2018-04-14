@@ -20,7 +20,8 @@ int main(int argc, char* argv[]) {
 	scanMatrixInputs(g);
 	printAdjMatrix(g);
 
-	minimumPath(g, (int) atoi(argv[3]));
+	minimumPathFloydWarshall(g, (int) atoi(argv[3]));
+
 
 	return EXIT_SUCCESS;
 }
